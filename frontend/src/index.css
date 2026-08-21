@@ -5,30 +5,29 @@
   --color-primary: #000000;
   --color-on-primary: #ffffff;
 
-  --color-background: #fcf8fa;
-  --color-surface: #fcf8fa;
-  --color-surface-container: #f0edef;
-  --color-surface-container-low: #f6f3f5;
-  --color-surface-container-high: #eae7e9;
-  --color-surface-container-highest: #e4e2e4;
-  --color-surface-container-lowest: #ffffff;
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
 
-  --color-secondary: #505f76;
-  --color-on-surface: #1b1b1d;
-  --color-on-surface-variant: #45464d;
+  --color-surface-low: #f8fafc;
+  --color-surface-container: #f1f5f9;
+  --color-surface-high: #e2e8f0;
 
-  --color-outline: #76777d;
-  --color-outline-variant: #c6c6cd;
+  --color-secondary: #475569;
+  --color-on-surface: #0f172a;
+  --color-on-surface-variant: #64748b;
 
-  --color-error: #ba1a1a;
+  --color-outline: #94a3b8;
+  --color-outline-variant: #e2e8f0;
 
-  --font-body: "Geist", sans-serif;
-  --font-mono: "Geist Mono", monospace;
+  --color-success: #15803d;
+  --color-warning: #b45309;
+  --color-error: #b91c1c;
+
+  --font-sans: "Geist", sans-serif;
 
   --spacing-sidebar: 260px;
   --spacing-gutter: 24px;
 
-  --radius-default: 0.125rem;
-  --radius-lg: 0.25rem;
-  --radius-xl: 0.5rem;
+  --radius-sm: 4px;
+  --radius-md: 8px;
 }
