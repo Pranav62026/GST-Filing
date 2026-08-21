@@ -71,7 +71,7 @@ function Sidebar() {
           Consult Expert
         </button>
 
-        <button className="mt-2 w-full rounded-md px-3 py-2 text-left text-sm font-medium text-secondary hover:bg-surface-container">
+        <button className="mt-2 w-full rounded-md px-3 py-2 text-sm font-medium text-secondary hover:bg-surface-container">
           Logout
         </button>
       </div>
