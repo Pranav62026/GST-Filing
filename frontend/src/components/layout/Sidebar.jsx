@@ -1,4 +1,8 @@
-import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+
+import { AuthContext } from "../../context/AuthContext";
+import { toast } from "sonner";
 
 const navigation = [
   {
@@ -40,6 +44,8 @@ const navigation = [
 ];
 
 function Sidebar({ isOpen, onClose }) {
+  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate();
   return (
     <>
       {/* Mobile background */}
@@ -53,11 +59,7 @@ function Sidebar({ isOpen, onClose }) {
       {/* Sidebar */}
       <aside
         className={`fixed left-0 top-0 z-50 flex h-screen w-sidebar flex-col border-r border-outline-variant bg-surface transition-transform duration-200
-        ${
-          isOpen
-            ? "translate-x-0"
-            : "-translate-x-full"
-        }
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}
         md:translate-x-0`}
       >
         <div className="flex items-center justify-between border-b border-outline-variant px-6 py-5">
@@ -105,8 +107,16 @@ function Sidebar({ isOpen, onClose }) {
           <button className="w-full rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-on-primary">
             Consult Expert
           </button>
-
-          <button className="mt-2 w-full rounded-md px-3 py-2 text-sm font-medium text-secondary hover:bg-surface-container">
+          <button
+            type="button"
+            onClick={() => {
+              logout();
+              onClose();
+              toast.success("You have been logged out.");
+              navigate("/login");
+            }}
+            className="mt-2 w-full rounded-md px-3 py-2 text-sm font-medium text-secondary hover:bg-surface-container"
+          >
             Logout
           </button>
         </div>

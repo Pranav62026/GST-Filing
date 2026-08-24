@@ -3,8 +3,13 @@ import { useNavigate } from "react-router-dom";
 
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { toast } from "sonner";
+import { loginUser } from "../../services/mockAuth";
 
 function Login() {
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const {
@@ -14,9 +19,18 @@ function Login() {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    const result = loginUser(data.email, data.password);
 
-    // API call will be added later
+    if (!result.success) {
+      toast.error(result.message);
+      return;
+    }
+
+    login(result.user);
+
+    toast.success(`Welcome back, ${result.user.name}!`);
+
+    navigate("/dashboard");
   };
 
   return (

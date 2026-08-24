@@ -6,40 +6,44 @@ import Dashboard from "../pages/app/Dashboard";
 import Register from "../pages/auth/Register";
 import UiTest from "../pages/UiTest";
 import Login from "../pages/auth/Login";
+import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Routes */}
+        {/* Public routes */}
 
-        <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
 
-        {/* App Routes */}
+        <Route path="/register" element={<Register />} />
 
-        <Route element={<AppLayout />}>
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        {/* Protected routes */}
 
-          <Route path="/dashboard" element={<Dashboard />} />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<AppLayout />}>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-          <Route path="/checklist" element={<div>Checklist</div>} />
+            <Route path="/dashboard" element={<Dashboard />} />
 
-          <Route path="/documents" element={<div>Documents</div>} />
+            <Route path="/checklist" element={<div>Checklist</div>} />
 
-          <Route path="/roadmap" element={<div>Roadmap</div>} />
+            <Route path="/documents" element={<div>Documents</div>} />
 
-          <Route path="/services" element={<div>Services</div>} />
+            <Route path="/roadmap" element={<div>Roadmap</div>} />
 
-          <Route path="/appointments" element={<div>Appointments</div>} />
+            <Route path="/services" element={<div>Services</div>} />
 
-          <Route path="/payments" element={<div>Payments</div>} />
+            <Route path="/appointments" element={<div>Appointments</div>} />
 
-          <Route path="/messages" element={<div>Messages</div>} />
+            <Route path="/payments" element={<div>Payments</div>} />
 
-          <Route path="/notifications" element={<div>Notifications</div>} />
+            <Route path="/messages" element={<div>Messages</div>} />
 
-          <Route path="/uitest" element={<UiTest />} />
+            <Route path="/notifications" element={<div>Notifications</div>} />
+
+            <Route path="/uitest" element={<UiTest />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

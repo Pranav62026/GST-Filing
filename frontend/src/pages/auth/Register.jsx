@@ -1,8 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
+import { registerUser } from "../../services/mockAuth";
 
 function Register() {
   const navigate = useNavigate();
@@ -16,10 +18,21 @@ function Register() {
 
   const password = watch("password");
 
+  // Handles the form after all frontend validations pass
   const onSubmit = (data) => {
-    console.log(data);
+    const result = registerUser(data);
 
-    // API call will be added here
+    // Show the error returned by our mock auth service
+    if (!result.success) {
+      toast.error(result.message);
+      return;
+    }
+
+    toast.success(`Welcome, ${result.user.name}! Your account was created successfully.`);
+
+    // Temporary: we'll change this to /onboarding
+    // after we create the onboarding page
+    navigate("/dashboard");
   };
 
   return (
@@ -36,24 +49,20 @@ function Register() {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Full Name */}
-
+          {/* Full name */}
           <Input
             label="Full Name"
             placeholder="Enter your full name"
             {...register("name", {
               required: "Full name is required",
-
               minLength: {
                 value: 2,
                 message: "Name must be at least 2 characters",
               },
-
               maxLength: {
                 value: 60,
                 message: "Name cannot exceed 60 characters",
               },
-
               pattern: {
                 value: /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/,
                 message: "Enter a valid name",
@@ -63,19 +72,16 @@ function Register() {
           />
 
           {/* Email */}
-
           <Input
             label="Email"
             type="email"
             placeholder="Enter your email"
             {...register("email", {
               required: "Email is required",
-
               maxLength: {
                 value: 254,
                 message: "Email address is too long",
               },
-
               pattern: {
                 value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                 message: "Enter a valid email address",
@@ -84,8 +90,7 @@ function Register() {
             error={errors.email?.message}
           />
 
-          {/* Mobile Number */}
-
+          {/* Mobile number */}
           <Input
             label="Mobile Number"
             type="tel"
@@ -94,13 +99,12 @@ function Register() {
             placeholder="Enter your 10 digit mobile number"
             {...register("phone", {
               required: "Mobile number is required",
-
               pattern: {
                 value: /^[6-9][0-9]{9}$/,
                 message: "Enter a valid 10 digit mobile number",
               },
-
               onChange: (event) => {
+                // Remove anything that isn't a number
                 event.target.value = event.target.value
                   .replace(/\D/g, "")
                   .slice(0, 10);
@@ -110,7 +114,6 @@ function Register() {
           />
 
           {/* Password */}
-
           <Input
             label="Password"
             type="password"
@@ -130,8 +133,7 @@ function Register() {
             error={errors.password?.message}
           />
 
-          {/* Confirm Password */}
-
+          {/* Confirm password */}
           <Input
             label="Confirm Password"
             type="password"

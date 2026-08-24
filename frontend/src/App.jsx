@@ -1,9 +1,15 @@
-import AppRoutes from './routes/AppRoutes'
+import AuthProvider from "./context/AuthContext";
+import AppRoutes from "./routes/AppRoutes";
+import { Toaster } from "sonner";
 
 const App = () => {
   return (
-     <AppRoutes />
-  )
-}
+    <AuthProvider>
+      <Toaster position="top-right"  />
 
-export default App
+      <AppRoutes />
+    </AuthProvider>
+  );
+};
+
+export default App;
