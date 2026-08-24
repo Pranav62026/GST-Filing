@@ -5,6 +5,7 @@ import AppLayout from "../components/layout/AppLayout";
 import Dashboard from "../pages/app/Dashboard";
 import Register from "../pages/auth/Register";
 import UiTest from "../pages/UiTest";
+import Login from "../pages/auth/Login";
 
 function AppRoutes() {
   return (
@@ -13,6 +14,7 @@ function AppRoutes() {
         {/* Public Routes */}
 
         <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
 
         {/* App Routes */}
 
