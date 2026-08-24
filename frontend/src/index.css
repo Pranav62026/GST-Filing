@@ -2,6 +2,7 @@
 @import "tailwindcss";
 
 @theme {
+  /* ── Existing dashboard tokens (preserved) ── */
   --color-primary: #000000;
   --color-on-primary: #ffffff;
 
@@ -30,4 +31,58 @@
 
   --radius-sm: 4px;
   --radius-md: 8px;
+
+  /* ── Landing page brand tokens ── */
+  --color-brand-navy: #0a1f44;
+  --color-brand-navy-light: #102a5c;
+  --color-brand-blue: #1a56db;
+  --color-brand-blue-light: #e8f0fe;
+  --color-brand-blue-medium: #3b82f6;
+  --color-brand-green: #15803d;
+  --color-brand-green-bright: #22c55e;
+  --color-brand-whatsapp: #25d366;
+
+  /* Landing page neutral tokens */
+  --color-brand-gray-50: #f9fafb;
+  --color-brand-gray-100: #f3f4f6;
+  --color-brand-gray-200: #e5e7eb;
+  --color-brand-gray-400: #9ca3af;
+  --color-brand-gray-500: #6b7280;
+  --color-brand-gray-600: #4b5563;
+  --color-brand-gray-700: #374151;
+  --color-brand-gray-800: #1f2937;
+  --color-brand-gray-900: #111827;
+
+  /* Landing page spacing */
+  --spacing-section: 80px;
+  --spacing-section-sm: 48px;
+
+  /* Landing page radius */
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+
+  /* Animations */
+  --animate-fade-in: fade-in 0.5s ease-out;
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* ── Global base styles ── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Focus-visible utility for accessibility ── */
+*:focus-visible {
+  outline: 2px solid var(--color-brand-blue);
+  outline-offset: 2px;
 }
