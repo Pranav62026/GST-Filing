@@ -1,7 +1,8 @@
+import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 
-function AppLayout({ children }) {
+function AppLayout() {
   return (
     <div className="min-h-screen bg-background">
       <Sidebar />
@@ -10,7 +11,7 @@ function AppLayout({ children }) {
         <Topbar />
 
         <main className="min-h-[calc(100vh-4rem)] p-6">
-          {children}
+          <Outlet/>
         </main>
       </div>
     </div>

@@ -1,15 +1,22 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import AppLayout from "../components/layout/AppLayout";
-import Dashboard from "../pages/app/Dashboard";
 
+import Dashboard from "../pages/app/Dashboard";
+import Register from "../pages/auth/Register";
 import UiTest from "../pages/UiTest";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
-      <AppLayout>
-        <Routes>
+      <Routes>
+        {/* Public Routes */}
+
+        <Route path="/register" element={<Register />} />
+
+        {/* App Routes */}
+
+        <Route element={<AppLayout />}>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
           <Route path="/dashboard" element={<Dashboard />} />
@@ -30,11 +37,9 @@ function AppRoutes() {
 
           <Route path="/notifications" element={<div>Notifications</div>} />
 
-          {/* temp */}
-
           <Route path="/uitest" element={<UiTest />} />
-        </Routes>
-      </AppLayout>
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
