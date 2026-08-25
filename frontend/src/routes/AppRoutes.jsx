@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import AppLayout from "../components/layout/AppLayout";
 
@@ -7,12 +7,14 @@ import Register from "../pages/auth/Register";
 import UiTest from "../pages/UiTest";
 import Login from "../pages/auth/Login";
 import ProtectedRoute from "./ProtectedRoute";
+import Home from "../pages/Home";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
         {/* Public routes */}
+        <Route path="/" element={<Home />} />
 
         <Route path="/login" element={<Login />} />
 
@@ -22,7 +24,7 @@ function AppRoutes() {
 
         <Route element={<ProtectedRoute />}>
           <Route element={<AppLayout />}>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            {/* <Route path="/" element={<Navigate to="/dashboard" replace />} /> */}
 
             <Route path="/dashboard" element={<Dashboard />} />
 
