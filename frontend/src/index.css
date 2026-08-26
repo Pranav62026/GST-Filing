@@ -2,37 +2,46 @@
 @import "tailwindcss";
 
 @theme {
-  /* ── Existing dashboard tokens (preserved) ── */
-  --color-primary: #000000;
+  /* Brand */
+  --color-primary: #212c43;
   --color-on-primary: #ffffff;
+  --color-primary-hover: #182137;
 
+  /* General */
   --color-background: #f8fafc;
   --color-surface: #ffffff;
 
+  /* Surface hierarchy */
   --color-surface-low: #f8fafc;
   --color-surface-container: #f1f5f9;
   --color-surface-high: #e2e8f0;
 
+  /* Text */
   --color-secondary: #475569;
   --color-on-surface: #0f172a;
   --color-on-surface-variant: #64748b;
 
+  /* Borders */
   --color-outline: #94a3b8;
   --color-outline-variant: #e2e8f0;
 
+  /* Feedback */
   --color-success: #15803d;
   --color-warning: #b45309;
   --color-error: #b91c1c;
 
+  /* Typography */
   --font-sans: "Geist", sans-serif;
 
+  /* Layout */
   --spacing-sidebar: 260px;
   --spacing-gutter: 24px;
 
+  /* Radius */
   --radius-sm: 4px;
   --radius-md: 8px;
 
-  /* ── Landing page brand tokens ── */
+  /* ── Landing page brand tokens (FE Dev 2) ── */
   --color-brand-navy: #0a1f44;
   --color-brand-navy-light: #102a5c;
   --color-brand-blue: #1a56db;

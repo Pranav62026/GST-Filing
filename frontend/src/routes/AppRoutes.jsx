@@ -1,113 +1,55 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import AppLayout from "../components/layout/AppLayout";
-import Dashboard from "../pages/app/Dashboard";
-import LandingPage from "../pages/LandingPage";
 
+import Dashboard from "../pages/app/Dashboard";
+import Register from "../pages/auth/Register";
 import UiTest from "../pages/UiTest";
+import Login from "../pages/auth/Login";
+import ProtectedRoute from "./ProtectedRoute";
+import Home from "../pages/Home";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public landing page — no sidebar/topbar */}
-        <Route path="/" element={<LandingPage />} />
+        {/* Public routes */}
+        <Route path="/" element={<Home />} />
 
-        {/* Dashboard routes — wrapped in AppLayout */}
-        <Route
-          path="/dashboard"
-          element={
-            <AppLayout>
-              <Dashboard />
-            </AppLayout>
-          }
-        />
+        <Route path="/login" element={<Login />} />
 
-        <Route
-          path="/checklist"
-          element={
-            <AppLayout>
-              <div>Checklist</div>
-            </AppLayout>
-          }
-        />
+        <Route path="/register" element={<Register />} />
 
-        <Route
-          path="/documents"
-          element={
-            <AppLayout>
-              <div>Documents</div>
-            </AppLayout>
-          }
-        />
+        {/* Protected routes */}
 
-        <Route
-          path="/roadmap"
-          element={
-            <AppLayout>
-              <div>Roadmap</div>
-            </AppLayout>
-          }
-        />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<AppLayout />}>
+            {/* <Route path="/" element={<Navigate to="/dashboard" replace />} /> */}
 
-        <Route
-          path="/services"
-          element={
-            <AppLayout>
-              <div>Services</div>
-            </AppLayout>
-          }
-        />
+            <Route path="/dashboard" element={<Dashboard />} />
 
-        <Route
-          path="/appointments"
-          element={
-            <AppLayout>
-              <div>Appointments</div>
-            </AppLayout>
-          }
-        />
+            <Route path="/checklist" element={<div>Checklist</div>} />
 
-        <Route
-          path="/payments"
-          element={
-            <AppLayout>
-              <div>Payments</div>
-            </AppLayout>
-          }
-        />
+            <Route path="/documents" element={<div>Documents</div>} />
 
-        <Route
-          path="/messages"
-          element={
-            <AppLayout>
-              <div>Messages</div>
-            </AppLayout>
-          }
-        />
+            <Route path="/roadmap" element={<div>Roadmap</div>} />
 
-        <Route
-          path="/notifications"
-          element={
-            <AppLayout>
-              <div>Notifications</div>
-            </AppLayout>
-          }
-        />
+            <Route path="/services" element={<div>Services</div>} />
 
-        {/* temp */}
-        <Route
-          path="/uitest"
-          element={
-            <AppLayout>
-              <UiTest />
-            </AppLayout>
-          }
-        />
+            <Route path="/appointments" element={<div>Appointments</div>} />
+
+            <Route path="/payments" element={<div>Payments</div>} />
+
+            <Route path="/messages" element={<div>Messages</div>} />
+
+            <Route path="/notifications" element={<div>Notifications</div>} />
+
+            <Route path="/uitest" element={<UiTest />} />
+          </Route>
+        </Route>
       </Routes>
     </BrowserRouter>
   );
 }
 
 export default AppRoutes;
-
