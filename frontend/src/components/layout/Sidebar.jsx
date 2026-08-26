@@ -41,6 +41,10 @@ const navigation = [
     label: "Notifications",
     path: "/notifications",
   },
+  {
+    label: "Gst registration",
+    path: "/gst-registration",
+  },
 ];
 
 function Sidebar({ isOpen, onClose }) {

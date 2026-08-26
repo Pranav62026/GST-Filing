@@ -2,95 +2,151 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand */
+  /* =========================================================
+     BRAND
+     ========================================================= */
+
   --color-primary: #212c43;
   --color-on-primary: #ffffff;
-  --color-primary-hover: #182137;
+  --color-primary-hover: #182338;
 
-  /* General */
-  --color-background: #f8fafc;
-  --color-surface: #ffffff;
+  /* =========================================================
+     GLOBAL DARK THEME
+     ========================================================= */
+
+  /* Main application background */
+  --color-background: #0f172a;
+
+  /* Main cards / surfaces */
+  --color-surface: #172238;
 
   /* Surface hierarchy */
-  --color-surface-low: #f8fafc;
-  --color-surface-container: #f1f5f9;
-  --color-surface-high: #e2e8f0;
+  --color-surface-low: #111b2d;
+  --color-surface-container: #172238;
+  --color-surface-high: #2b3854;
 
-  /* Text */
-  --color-secondary: #475569;
-  --color-on-surface: #0f172a;
-  --color-on-surface-variant: #64748b;
+  /* =========================================================
+     TEXT
+     ========================================================= */
 
-  /* Borders */
-  --color-outline: #94a3b8;
-  --color-outline-variant: #e2e8f0;
+  --color-secondary: #cbd5e1;
 
-  /* Feedback */
-  --color-success: #15803d;
-  --color-warning: #b45309;
-  --color-error: #b91c1c;
+  --color-on-surface: #f8fafc;
 
-  /* Typography */
+  --color-on-surface-variant: #94a3b8;
+
+  /* =========================================================
+     BORDERS
+     ========================================================= */
+
+  --color-outline: #475569;
+  --color-outline-variant: #334155;
+
+  /* =========================================================
+     FEEDBACK
+     ========================================================= */
+
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+
+  /* =========================================================
+     TYPOGRAPHY
+     ========================================================= */
+
   --font-sans: "Geist", sans-serif;
 
-  /* Layout */
+  /* =========================================================
+     LAYOUT
+     ========================================================= */
+
   --spacing-sidebar: 260px;
   --spacing-gutter: 24px;
 
-  /* Radius */
+  /* =========================================================
+     RADIUS
+     ========================================================= */
+
   --radius-sm: 4px;
   --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
 
-  /* ── Landing page brand tokens (FE Dev 2) ── */
-  --color-brand-navy: #0a1f44;
-  --color-brand-navy-light: #102a5c;
-  --color-brand-blue: #1a56db;
-  --color-brand-blue-light: #e8f0fe;
-  --color-brand-blue-medium: #3b82f6;
+  /* =========================================================
+     LANDING PAGE BRAND TOKENS
+     ========================================================= */
+
+  --color-brand-navy: #212c43;
+  --color-brand-navy-light: #2b3854;
+
+  --color-brand-blue: #0ea5e9;
+  --color-brand-blue-light: #e0f2fe;
+  --color-brand-blue-medium: #38bdf8;
+
   --color-brand-green: #15803d;
   --color-brand-green-bright: #22c55e;
   --color-brand-whatsapp: #25d366;
 
   /* Landing page neutral tokens */
-  --color-brand-gray-50: #f9fafb;
-  --color-brand-gray-100: #f3f4f6;
-  --color-brand-gray-200: #e5e7eb;
-  --color-brand-gray-400: #9ca3af;
-  --color-brand-gray-500: #6b7280;
-  --color-brand-gray-600: #4b5563;
-  --color-brand-gray-700: #374151;
-  --color-brand-gray-800: #1f2937;
-  --color-brand-gray-900: #111827;
+  --color-brand-gray-50: #f8fafc;
+  --color-brand-gray-100: #f1f5f9;
+  --color-brand-gray-200: #e2e8f0;
+  --color-brand-gray-400: #94a3b8;
+  --color-brand-gray-500: #64748b;
+  --color-brand-gray-600: #475569;
+  --color-brand-gray-700: #334155;
+  --color-brand-gray-800: #1e293b;
+  --color-brand-gray-900: #0f172a;
 
-  /* Landing page spacing */
+  /* =========================================================
+     LANDING PAGE SPACING
+     ========================================================= */
+
   --spacing-section: 80px;
   --spacing-section-sm: 48px;
 
-  /* Landing page radius */
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-2xl: 24px;
+  /* =========================================================
+     ANIMATIONS
+     ========================================================= */
 
-  /* Animations */
   --animate-fade-in: fade-in 0.5s ease-out;
 
   @keyframes fade-in {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
 
-/* ── Global base styles ── */
+/* =========================================================
+   GLOBAL BASE STYLES
+   ========================================================= */
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-on-surface);
+  font-family: var(--font-sans);
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Focus-visible utility for accessibility ── */
+/* =========================================================
+   FOCUS
+   ========================================================= */
+
 *:focus-visible {
   outline: 2px solid var(--color-brand-blue);
   outline-offset: 2px;

@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-import Button from "../../components/ui/Button";
-import Card from "../../components/ui/Card";
+import Button from "../../../components/ui/Button";
+import Card from "../../../components/ui/Card";
 
 const MAX_SIZE = 5 * 1024 * 1024;
 

@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import Input from "../../../components/ui/Input";
+import Button from "../../../components/ui/Button";
 
-import Input from "../../components/ui/Input";
-import Button from "../../components/ui/Button";
+
 
 const CONSTITUTIONS = [
   "Proprietorship",
@@ -35,7 +36,14 @@ const REGISTRATION_REASONS = [
   "Business Expansion",
 ];
 
-function FormSelect({ label, name, options, register, error, required = false }) {
+function FormSelect({
+  label,
+  name,
+  options,
+  register,
+  error,
+  required = false,
+}) {
   return (
     <div>
       <label
@@ -134,7 +142,10 @@ function GstRegistration() {
               <Input
                 label={
                   <>
-                    PAN <span className="text-xs font-normal text-on-surface-variant">(ABCDE1234F)</span>
+                    PAN{" "}
+                    <span className="text-xs font-normal text-on-surface-variant">
+                      (ABCDE1234F)
+                    </span>
                   </>
                 }
                 name="pan"
