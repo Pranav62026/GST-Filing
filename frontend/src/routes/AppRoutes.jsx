@@ -8,6 +8,8 @@ import UiTest from "../pages/UiTest";
 import Login from "../pages/auth/Login";
 import ProtectedRoute from "./ProtectedRoute";
 import Home from "../pages/Home";
+import Documents from "../pages/app/Documents";
+
 
 function AppRoutes() {
   return (
@@ -45,6 +47,11 @@ function AppRoutes() {
             <Route path="/notifications" element={<div>Notifications</div>} />
 
             <Route path="/uitest" element={<UiTest />} />
+
+
+
+
+
           </Route>
         </Route>
       </Routes>
