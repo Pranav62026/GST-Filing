@@ -2,8 +2,8 @@ import { useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-import Button from "../../components/ui/Button";
-import Card from "../../components/ui/Card";
+import Button from "../../../components/ui/Button";
+import Card from "../../../components/ui/Card";
 
 function DocumentPreview({ title, file }) {
   const preview = useMemo(() => {
