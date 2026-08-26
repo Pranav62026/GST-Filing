@@ -1,5 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import LandingNavbar from "../components/layout/LandingNavbar";
+import WhyChooseUs from "../components/home/WhyChooseUs";
+import Testimonials from "../components/home/Testimonials";
+import QuestionsCTA from "../components/home/QuestionsCTA";
+import Footer from "../components/home/Footer";
 
 function Home() {
   const navigate = useNavigate();
@@ -113,6 +117,12 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── FE Dev 2 sections ── */}
+      <WhyChooseUs />
+      <Testimonials />
+      <QuestionsCTA />
+      <Footer />
     </main>
   );
 }
