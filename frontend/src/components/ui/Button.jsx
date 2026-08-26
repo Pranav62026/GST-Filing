@@ -14,17 +14,19 @@ function Button({
 }) {
   const variants = {
     primary:
-      "bg-primary text-on-primary hover:bg-primary/90",
+      "bg-white text-[#212C43] shadow-sm hover:bg-slate-100 hover:shadow-md",
+
     secondary:
       "border border-outline-variant bg-surface text-on-surface hover:bg-surface-container",
-    danger:
-      "bg-error text-on-primary hover:bg-error/90",
-    navy:
-      "bg-brand-navy text-white hover:bg-brand-navy-light",
-    whatsapp:
-      "bg-brand-whatsapp text-white hover:bg-brand-green-bright",
+
+    danger: "bg-error text-on-primary hover:bg-error/90",
+
+    navy: "bg-primary text-on-primary hover:bg-primary-hover",
+
+    whatsapp: "bg-brand-whatsapp text-white hover:bg-brand-green-bright",
+
     "outline-brand":
-      "border-2 border-brand-blue text-brand-blue bg-white hover:bg-brand-blue-light",
+      "border-2 border-brand-blue text-brand-blue bg-transparent hover:bg-brand-blue-light",
   };
 
   const sizes = {
@@ -33,17 +35,13 @@ function Button({
     lg: "px-6 py-3 text-base",
   };
 
-  const baseClass = `inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50 ${variants[variant] || variants.primary} ${sizes[size] || sizes.md} ${className}`;
+  const baseClass = `inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50 ${
+    variants[variant] || variants.primary
+  } ${sizes[size] || sizes.md} ${className}`;
 
   if (as === "a" || href) {
     return (
-      <a
-        href={href}
-        target={target}
-        rel={rel}
-        className={baseClass}
-        {...props}
-      >
+      <a href={href} target={target} rel={rel} className={baseClass} {...props}>
         {children}
       </a>
     );
