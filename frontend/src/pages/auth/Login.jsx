@@ -97,6 +97,7 @@ function Login() {
               <Input
                 label="Email"
                 type="email"
+                variant="light"
                 placeholder="Enter your email"
                 {...register("email", {
                   required: "Email is required",
@@ -115,6 +116,7 @@ function Login() {
               <Input
                 label="Password"
                 type="password"
+                variant="light"
                 placeholder="Enter your password"
                 showPasswordToggle
                 {...register("password", {
@@ -138,7 +140,7 @@ function Login() {
 
               <Button
                 type="submit"
-                className="w-full !bg-[#212C43] hover:!bg-[#182338]"
+                className="w-full !bg-[#212C43] !text-white hover:!bg-[#182338]"
               >
                 Login
               </Button>

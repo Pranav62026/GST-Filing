@@ -105,6 +105,7 @@ function Register() {
               {/* Full name */}
               <Input
                 label="Full Name"
+                variant="light"
                 placeholder="Enter your full name"
                 {...register("name", {
                   required: "Full name is required",
@@ -128,6 +129,7 @@ function Register() {
               <Input
                 label="Email"
                 type="email"
+                variant="light"
                 placeholder="Enter your email"
                 {...register("email", {
                   required: "Email is required",
@@ -148,6 +150,7 @@ function Register() {
                 label="Mobile Number"
                 type="tel"
                 inputMode="numeric"
+                variant="light"
                 maxLength={10}
                 placeholder="Enter your 10 digit mobile number"
                 {...register("phone", {
@@ -170,6 +173,7 @@ function Register() {
               <Input
                 label="Password"
                 type="password"
+                variant="light"
                 placeholder="Create a password"
                 showPasswordToggle
                 {...register("password", {
@@ -190,6 +194,7 @@ function Register() {
               <Input
                 label="Confirm Password"
                 type="password"
+                variant="light"
                 placeholder="Confirm your password"
                 showPasswordToggle
                 {...register("confirmPassword", {
@@ -202,7 +207,7 @@ function Register() {
 
               <Button
                 type="submit"
-                className="w-full bg-primary! hover:bg-[#182338]!"
+                className="w-full !bg-[#212C43] !text-white hover:!bg-[#182338]"
               >
                 Create Account
               </Button>
