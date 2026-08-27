@@ -9,7 +9,10 @@ import Login from "../pages/auth/Login";
 
 import UiTest from "../pages/UiTest";
 import ProtectedRoute from "./ProtectedRoute";
+import OnboardingRoute from "./OnboardingRoute";
+
 import Home from "../pages/Home";
+
 import Documents from "../pages/app/gst/Documents";
 import ReviewDocuments from "../pages/app/gst/Review";
 import GstRegistration from "../pages/app/gst/GstRegistration";
@@ -33,34 +36,42 @@ function AppRoutes() {
         ========================== */}
 
         <Route element={<ProtectedRoute />}>
-          <Route element={<AppLayout />}>
-            {/* Dashboard */}
-            <Route path="/dashboard" element={<Dashboard />} />
+          {/* =========================
+              GST ONBOARDING
+          ========================== */}
 
-            {/* GST Filing Flow */}
+          <Route element={<AppLayout />}>
             <Route path="/gst-registration" element={<GstRegistration />} />
 
             <Route path="/documents" element={<Documents />} />
 
             <Route path="/review-documents" element={<ReviewDocuments />} />
+          </Route>
 
-            {/* Existing App Routes */}
-            <Route path="/checklist" element={<div>Checklist</div>} />
+          {/* =========================
+              COMPLETED USERS ONLY
+          ========================== */}
 
-            <Route path="/roadmap" element={<div>Roadmap</div>} />
+          <Route element={<OnboardingRoute />}>
+            <Route element={<AppLayout />}>
+              <Route path="/dashboard" element={<Dashboard />} />
 
-            <Route path="/services" element={<div>Services</div>} />
+              <Route path="/checklist" element={<div>Checklist</div>} />
 
-            <Route path="/appointments" element={<div>Appointments</div>} />
+              <Route path="/roadmap" element={<div>Roadmap</div>} />
 
-            <Route path="/payments" element={<div>Payments</div>} />
+              <Route path="/services" element={<div>Services</div>} />
 
-            <Route path="/messages" element={<div>Messages</div>} />
+              <Route path="/appointments" element={<div>Appointments</div>} />
 
-            <Route path="/notifications" element={<div>Notifications</div>} />
+              <Route path="/payments" element={<div>Payments</div>} />
 
-            {/* Temporary UI testing */}
-            <Route path="/uitest" element={<UiTest />} />
+              <Route path="/messages" element={<div>Messages</div>} />
+
+              <Route path="/notifications" element={<div>Notifications</div>} />
+
+              <Route path="/uitest" element={<UiTest />} />
+            </Route>
           </Route>
         </Route>
       </Routes>

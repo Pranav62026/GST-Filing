@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
+
+import { AuthContext } from "../context/AuthContext";
 
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -8,8 +9,6 @@ function ProtectedRoute() {
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-
-  
 
   return <Outlet />;
 }
