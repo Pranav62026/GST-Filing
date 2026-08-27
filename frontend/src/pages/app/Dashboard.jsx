@@ -1,16 +1,15 @@
-import { useMemo, useState, useContext } from "react";
+import { useContext, useMemo, useState } from "react";
 import {
+  ArrowRight,
   Bell,
   CalendarDays,
+  CheckCircle2,
+  Clock3,
   Eye,
   FileText,
   Search,
-  Users,
-  Clock3,
-  CheckCircle2,
   XCircle,
 } from "lucide-react";
-import { toast } from "sonner";
 
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
@@ -19,41 +18,64 @@ import Badge from "../../components/ui/Badge";
 import Modal from "../../components/ui/Modal";
 import { AuthContext } from "../../context/AuthContext";
 
+/*
+ * Temporary mock data.
+ * This structure is ready to be replaced by the backend API later.
+ */
 const APPLICATIONS = [
   {
     id: "GST-2026-001",
-    name: "Rahul Sharma",
-    gstin: "09ABCDE1234F1Z5",
     date: "26 Aug 2026",
+    applicationType: "GST Registration",
     status: "pending",
   },
   {
     id: "GST-2026-002",
-    name: "Priya Enterprises",
-    gstin: "27FGHIJ5678K2Z3",
-    date: "25 Aug 2026",
+    date: "20 Aug 2026",
+    applicationType: "GST Registration",
     status: "approved",
   },
   {
     id: "GST-2026-003",
-    name: "Aarav Traders",
-    gstin: "10KLMNO9012P3Z4",
-    date: "24 Aug 2026",
+    date: "14 Aug 2026",
+    applicationType: "GST Registration",
     status: "pending",
   },
   {
     id: "GST-2026-004",
-    name: "Sharma Manufacturing",
-    gstin: "23QRSTU3456V4Z6",
-    date: "23 Aug 2026",
+    date: "08 Aug 2026",
+    applicationType: "GST Registration",
     status: "rejected",
   },
   {
     id: "GST-2026-005",
-    name: "Neha Retail",
-    gstin: "29WXYZA7890B5Z2",
-    date: "22 Aug 2026",
+    date: "02 Aug 2026",
+    applicationType: "GST Registration",
     status: "approved",
+  },
+];
+
+const NOTIFICATIONS = [
+  {
+    id: 1,
+    title: "Document review pending",
+    message: "Your documents for GST-2026-001 are currently under review.",
+    time: "2 hours ago",
+    icon: Clock3,
+  },
+  {
+    id: 2,
+    title: "Application approved",
+    message: "GST-2026-002 has been successfully approved.",
+    time: "2 days ago",
+    icon: CheckCircle2,
+  },
+  {
+    id: 3,
+    title: "Application needs attention",
+    message: "Please check the latest update for GST-2026-004.",
+    time: "4 days ago",
+    icon: XCircle,
   },
 ];
 
@@ -77,10 +99,13 @@ const STATUS_CONFIG = {
 
 function StatCard({ label, value, description, icon: Icon }) {
   return (
-    <Card className="min-h-[145px] p-5 transition-transform duration-200 hover:-translate-y-0.5">
-      <div className="flex items-start justify-between gap-4">
-        <div>
+    <Card className="group relative min-h-[145px] overflow-hidden p-5 transition-transform duration-200 hover:-translate-y-0.5">
+      <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-white/[0.025]" />
+
+      <div className="relative flex items-start justify-between gap-4">
+        <div className="min-w-0">
           <p className="text-xs font-medium text-on-surface-variant">{label}</p>
+
           <p className="mt-4 text-3xl font-semibold tracking-tight text-on-surface">
             {value}
           </p>
@@ -91,13 +116,54 @@ function StatCard({ label, value, description, icon: Icon }) {
         </div>
       </div>
 
-      <p className="mt-3 text-xs text-on-surface-variant">{description}</p>
+      <p className="relative mt-3 text-xs text-on-surface-variant">
+        {description}
+      </p>
     </Card>
+  );
+}
+
+function NotificationItem({ notification }) {
+  const Icon = notification.icon;
+
+  return (
+    <div className="flex gap-3 border-b border-outline-variant px-5 py-4 last:border-b-0">
+      <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-outline-variant bg-surface-container text-on-surface">
+        <Icon className="h-4 w-4" aria-hidden="true" />
+      </div>
+
+      <div className="min-w-0">
+        <p className="text-sm font-medium text-on-surface">
+          {notification.title}
+        </p>
+
+        <p className="mt-1 text-xs leading-5 text-on-surface-variant">
+          {notification.message}
+        </p>
+
+        <p className="mt-2 text-[11px] text-on-surface-variant">
+          {notification.time}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function ApplicationStatus({ status }) {
+  const config = STATUS_CONFIG[status];
+  const StatusIcon = config.icon;
+
+  return (
+    <Badge variant={config.variant}>
+      <StatusIcon className="mr-1 h-3 w-3" aria-hidden="true" />
+      {config.label}
+    </Badge>
   );
 }
 
 function Dashboard() {
   const { user } = useContext(AuthContext);
+
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
   const [selectedApplication, setSelectedApplication] = useState(null);
@@ -109,8 +175,7 @@ function Dashboard() {
       const matchesSearch =
         !query ||
         application.id.toLowerCase().includes(query) ||
-        application.name.toLowerCase().includes(query) ||
-        application.gstin.toLowerCase().includes(query);
+        application.applicationType.toLowerCase().includes(query);
 
       const matchesStatus = status === "all" || application.status === status;
 
@@ -137,23 +202,20 @@ function Dashboard() {
     year: "numeric",
   }).format(new Date());
 
-  const handleView = (application) => {
-    setSelectedApplication(application);
-  };
+  const firstName = user?.name?.split(" ")?.[0] || "there";
 
-  const handleViewAll = () => {
+  const clearFilters = () => {
     setSearch("");
     setStatus("all");
-    toast.info("Showing all GST applications.");
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[1500px] px-4 py-6 sm:px-6 lg:px-8">
+    <div className="min-h-full bg-background">
+      <main className="mx-auto w-full max-w-[1500px] px-4 py-6 sm:px-6 lg:px-8">
         {/* Page heading */}
-        <div className="mb-7 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <div className="flex items-center gap-3">
+        <section className="mb-7 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-3">
               <h1 className="text-2xl font-semibold tracking-tight text-on-surface sm:text-3xl">
                 Dashboard
               </h1>
@@ -164,145 +226,165 @@ function Dashboard() {
             </div>
 
             <p className="mt-2 text-sm text-on-surface-variant">
-              Welcome back, {user?.name || "Admin"} 👋
+              Welcome back, {firstName} 👋
             </p>
           </div>
 
-          <div className="flex items-center gap-3 rounded-md border border-outline-variant bg-surface px-4 py-2.5 text-sm text-on-surface-variant">
-            <CalendarDays className="h-4 w-4" aria-hidden="true" />
-            <span>{currentDate}</span>
-            <Bell className="ml-2 h-4 w-4 text-on-surface" aria-hidden="true" />
+          <div className="flex w-full items-center justify-between gap-3 rounded-md border border-outline-variant bg-surface px-4 py-2.5 text-sm text-on-surface-variant sm:w-auto sm:justify-start">
+            <div className="flex min-w-0 items-center gap-2">
+              <CalendarDays className="h-4 w-4 shrink-0" aria-hidden="true" />
+              <span className="truncate">{currentDate}</span>
+            </div>
+
+            <button
+              type="button"
+              aria-label="View notifications"
+              onClick={() =>
+                document
+                  .getElementById("notifications")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="shrink-0 rounded-md p-1.5 text-on-surface transition-colors hover:bg-surface-container"
+            >
+              <Bell className="h-4 w-4" aria-hidden="true" />
+            </button>
           </div>
-        </div>
-
-        {/* Summary cards */}
-        <section
-          aria-label="GST application summary"
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5"
-        >
-          <StatCard
-            label="Total Users"
-            value="—"
-            description="Registered users"
-            icon={Users}
-          />
-
-          <StatCard
-            label="GST Applications"
-            value={counts.total}
-            description="GST applications submitted"
-            icon={FileText}
-          />
-
-          <StatCard
-            label="Pending Applications"
-            value={counts.pending}
-            description="Currently under review"
-            icon={Clock3}
-          />
-
-          <StatCard
-            label="Approved Applications"
-            value={counts.approved}
-            description="Successfully approved"
-            icon={CheckCircle2}
-          />
-
-          <StatCard
-            label="Rejected Applications"
-            value={counts.rejected}
-            description="Applications rejected"
-            icon={XCircle}
-          />
         </section>
 
-        {/* Applications */}
-        <section className="mt-9">
+        {/* Application summary */}
+        <section aria-label="GST application summary">
           <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 className="text-lg font-semibold text-on-surface">
-                Recent GST Applications
+              <h2 className="text-base font-semibold text-on-surface">
+                Application Overview
               </h2>
 
-              <p className="mt-1 text-sm text-on-surface-variant">
-                Review and manage recently submitted applications.
+              <p className="mt-1 text-xs text-on-surface-variant">
+                A quick look at your GST filing activity.
               </p>
             </div>
 
             <Button
               type="button"
-              variant="secondary"
               size="sm"
-              onClick={handleViewAll}
+              onClick={() => (window.location.href = "/gst-registration")}
             >
-              View All
-              <span aria-hidden="true">→</span>
+              Start GST Registration
+              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
             </Button>
           </div>
 
-          <Card padding={false} className="overflow-hidden">
-            {/* Filters */}
-            <div className="flex flex-col gap-3 border-b border-outline-variant p-4 sm:flex-row">
-              <div className="relative min-w-0 flex-1">
-                <Search
-                  className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-on-surface-variant"
-                  aria-hidden="true"
-                />
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <StatCard
+              label="Total Applications"
+              value={counts.total}
+              description="Applications submitted"
+              icon={FileText}
+            />
 
-                <Input
-                  name="application-search"
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                  placeholder="Search applicant or GSTIN..."
-                  className="pl-9"
-                />
+            <StatCard
+              label="Pending Applications"
+              value={counts.pending}
+              description="Currently under review"
+              icon={Clock3}
+            />
+
+            <StatCard
+              label="Approved Applications"
+              value={counts.approved}
+              description="Successfully approved"
+              icon={CheckCircle2}
+            />
+
+            <StatCard
+              label="Rejected Applications"
+              value={counts.rejected}
+              description="Applications rejected"
+              icon={XCircle}
+            />
+          </div>
+        </section>
+
+        {/* Recent applications + notifications */}
+        <section className="mt-9 grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+          {/* Recent applications */}
+          <div className="min-w-0">
+            <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div className="min-w-0">
+                <h2 className="text-lg font-semibold text-on-surface">
+                  Recent Applications
+                </h2>
+
+                <p className="mt-1 text-sm text-on-surface-variant">
+                  Your latest applications and their current status.
+                </p>
               </div>
 
-              <select
-                aria-label="Filter applications by status"
-                value={status}
-                onChange={(event) => setStatus(event.target.value)}
-                className="h-11 rounded-md border border-outline-variant bg-surface px-3 text-sm text-on-surface outline-none transition-colors focus:border-primary"
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="w-fit shrink-0 text-xs font-medium text-on-surface-variant transition-colors hover:text-on-surface"
               >
-                <option value="all">All Status</option>
-                <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-                <option value="rejected">Rejected</option>
-              </select>
+                Clear filters
+              </button>
             </div>
 
-            {/* Responsive table */}
-            <div className="overflow-x-auto">
-              <table className="min-w-[760px] w-full text-left">
-                <thead className="border-b border-outline-variant bg-surface-container">
-                  <tr>
-                    <th className="px-5 py-3 text-xs font-medium text-on-surface-variant">
-                      Application ID
-                    </th>
-                    <th className="px-5 py-3 text-xs font-medium text-on-surface-variant">
-                      Applicant
-                    </th>
-                    <th className="px-5 py-3 text-xs font-medium text-on-surface-variant">
-                      GSTIN
-                    </th>
-                    <th className="px-5 py-3 text-xs font-medium text-on-surface-variant">
-                      Application Date
-                    </th>
-                    <th className="px-5 py-3 text-xs font-medium text-on-surface-variant">
-                      Status
-                    </th>
-                    <th className="px-5 py-3 text-xs font-medium text-on-surface-variant">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
+            <Card padding={false} className="overflow-hidden">
+              {/* Filters */}
+              <div className="flex flex-col gap-3 border-b border-outline-variant p-3 sm:p-4 sm:flex-row">
+                <div className="relative min-w-0 flex-1">
+                  <Search
+                    className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-on-surface-variant"
+                    aria-hidden="true"
+                  />
 
-                <tbody className="divide-y divide-outline-variant">
-                  {filteredApplications.map((application) => {
-                    const config = STATUS_CONFIG[application.status];
-                    const StatusIcon = config.icon;
+                  <Input
+                    name="application-search"
+                    value={search}
+                    onChange={(event) => setSearch(event.target.value)}
+                    placeholder="Search application ID or type..."
+                    className="pl-9"
+                  />
+                </div>
 
-                    return (
+                <select
+                  aria-label="Filter applications by status"
+                  value={status}
+                  onChange={(event) => setStatus(event.target.value)}
+                  className="h-11 w-full rounded-md border border-outline-variant bg-surface px-3 text-sm text-on-surface outline-none transition-colors focus:border-primary sm:w-auto"
+                >
+                  <option value="all">All Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="approved">Approved</option>
+                  <option value="rejected">Rejected</option>
+                </select>
+              </div>
+
+              {/* Desktop/tablet table */}
+              <div className="hidden overflow-x-auto md:block">
+                <table className="w-full text-left">
+                  <thead className="border-b border-outline-variant bg-surface-container">
+                    <tr>
+                      <th className="px-5 py-3 text-xs font-medium text-on-surface-variant">
+                        Application ID
+                      </th>
+                      <th className="px-5 py-3 text-xs font-medium text-on-surface-variant">
+                        Date
+                      </th>
+                      <th className="px-5 py-3 text-xs font-medium text-on-surface-variant">
+                        Application Type
+                      </th>
+                      <th className="px-5 py-3 text-xs font-medium text-on-surface-variant">
+                        Current Status
+                      </th>
+                      <th className="px-5 py-3 text-xs font-medium text-on-surface-variant">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody className="divide-y divide-outline-variant">
+                    {filteredApplications.map((application) => (
                       <tr
                         key={application.id}
                         className="transition-colors hover:bg-surface-container/50"
@@ -311,26 +393,16 @@ function Dashboard() {
                           {application.id}
                         </td>
 
-                        <td className="px-5 py-4 text-sm font-medium text-on-surface">
-                          {application.name}
-                        </td>
-
-                        <td className="px-5 py-4 font-mono text-xs text-on-surface-variant">
-                          {application.gstin}
-                        </td>
-
                         <td className="px-5 py-4 text-sm text-on-surface-variant">
                           {application.date}
                         </td>
 
+                        <td className="px-5 py-4 text-sm text-on-surface">
+                          {application.applicationType}
+                        </td>
+
                         <td className="px-5 py-4">
-                          <Badge variant={config.variant}>
-                            <StatusIcon
-                              className="mr-1 h-3 w-3"
-                              aria-hidden="true"
-                            />
-                            {config.label}
-                          </Badge>
+                          <ApplicationStatus status={application.status} />
                         </td>
 
                         <td className="px-5 py-4">
@@ -338,79 +410,180 @@ function Dashboard() {
                             type="button"
                             variant="secondary"
                             size="sm"
-                            onClick={() => handleView(application)}
+                            onClick={() => setSelectedApplication(application)}
                           >
                             <Eye className="h-3.5 w-3.5" aria-hidden="true" />
                             View
                           </Button>
                         </td>
                       </tr>
-                    );
-                  })}
+                    ))}
 
-                  {filteredApplications.length === 0 && (
-                    <tr>
-                      <td
-                        colSpan={6}
-                        className="px-5 py-12 text-center text-sm text-on-surface-variant"
+                    {filteredApplications.length === 0 && (
+                      <tr>
+                        <td colSpan={5} className="px-5 py-14 text-center">
+                          <FileText className="mx-auto h-8 w-8 text-on-surface-variant" />
+                          <p className="mt-3 text-sm font-medium text-on-surface">
+                            No applications found
+                          </p>
+                          <p className="mt-1 text-xs text-on-surface-variant">
+                            Try changing your search or status filter.
+                          </p>
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile application cards */}
+              <div className="divide-y divide-outline-variant md:hidden">
+                {filteredApplications.map((application) => (
+                  <article key={application.id} className="p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-on-surface">
+                          {application.id}
+                        </p>
+
+                        <p className="mt-1 text-xs text-on-surface-variant">
+                          {application.applicationType}
+                        </p>
+                      </div>
+
+                      <div className="shrink-0">
+                        <ApplicationStatus status={application.status} />
+                      </div>
+                    </div>
+
+                    <div className="mt-4 flex items-end justify-between gap-3">
+                      <div>
+                        <p className="text-[10px] font-medium uppercase tracking-wide text-on-surface-variant">
+                          Application date
+                        </p>
+
+                        <p className="mt-1 text-xs text-on-surface">
+                          {application.date}
+                        </p>
+                      </div>
+
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => setSelectedApplication(application)}
                       >
-                        No applications match your search or filter.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                        <Eye className="h-3.5 w-3.5" aria-hidden="true" />
+                        View
+                      </Button>
+                    </div>
+                  </article>
+                ))}
+
+                {filteredApplications.length === 0 && (
+                  <div className="px-5 py-14 text-center">
+                    <FileText className="mx-auto h-8 w-8 text-on-surface-variant" />
+                    <p className="mt-3 text-sm font-medium text-on-surface">
+                      No applications found
+                    </p>
+                    <p className="mt-1 text-xs text-on-surface-variant">
+                      Try changing your search or status filter.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <div className="border-t border-outline-variant px-4 py-3 text-xs text-on-surface-variant sm:px-5">
+                Showing {filteredApplications.length} of {APPLICATIONS.length}{" "}
+                applications
+              </div>
+            </Card>
+          </div>
+
+          {/* Notifications */}
+          <aside id="notifications" className="min-w-0">
+            <div className="mb-4 flex items-end justify-between gap-3">
+              <div>
+                <h2 className="text-lg font-semibold text-on-surface">
+                  Notifications
+                </h2>
+
+                <p className="mt-1 text-sm text-on-surface-variant">
+                  Important updates related to your applications.
+                </p>
+              </div>
+
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-outline-variant bg-surface text-on-surface">
+                <Bell className="h-4 w-4" aria-hidden="true" />
+              </div>
             </div>
-          </Card>
+
+            <Card padding={false} className="overflow-hidden">
+              {NOTIFICATIONS.length > 0 ? (
+                NOTIFICATIONS.map((notification) => (
+                  <NotificationItem
+                    key={notification.id}
+                    notification={notification}
+                  />
+                ))
+              ) : (
+                <div className="px-5 py-12 text-center">
+                  <Bell className="mx-auto h-7 w-7 text-on-surface-variant" />
+                  <p className="mt-3 text-sm font-medium text-on-surface">
+                    No notifications
+                  </p>
+                  <p className="mt-1 text-xs text-on-surface-variant">
+                    You're all caught up.
+                  </p>
+                </div>
+              )}
+            </Card>
+          </aside>
         </section>
       </main>
 
+      {/* Application details */}
       <Modal
         isOpen={Boolean(selectedApplication)}
         onClose={() => setSelectedApplication(null)}
         title="Application Details"
       >
         {selectedApplication && (
-          <div className="space-y-4">
-            <div>
+          <div className="space-y-5">
+            <div className="rounded-lg border border-outline-variant bg-surface-container p-4">
               <p className="text-xs text-on-surface-variant">Application ID</p>
-              <p className="mt-1 font-medium text-on-surface">
+              <p className="mt-1 text-base font-semibold text-on-surface">
                 {selectedApplication.id}
               </p>
             </div>
 
-            <div>
-              <p className="text-xs text-on-surface-variant">Applicant</p>
-              <p className="mt-1 font-medium text-on-surface">
-                {selectedApplication.name}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-xs text-on-surface-variant">GSTIN</p>
-              <p className="mt-1 font-mono text-sm text-on-surface">
-                {selectedApplication.gstin}
-              </p>
-            </div>
-
-            <div className="flex items-center justify-between gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <p className="text-xs text-on-surface-variant">
-                  Application Date
-                </p>
+                <p className="text-xs text-on-surface-variant">Date</p>
                 <p className="mt-1 text-sm text-on-surface">
                   {selectedApplication.date}
                 </p>
               </div>
 
-              <Badge
-                variant={STATUS_CONFIG[selectedApplication.status].variant}
-              >
-                {STATUS_CONFIG[selectedApplication.status].label}
-              </Badge>
+              <div>
+                <p className="text-xs text-on-surface-variant">
+                  Application Type
+                </p>
+                <p className="mt-1 text-sm text-on-surface">
+                  {selectedApplication.applicationType}
+                </p>
+              </div>
             </div>
 
-            <div className="flex justify-end pt-2">
+            <div>
+              <p className="text-xs text-on-surface-variant">Current Status</p>
+
+              <div className="mt-2">
+                <ApplicationStatus status={selectedApplication.status} />
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-1">
               <Button onClick={() => setSelectedApplication(null)}>
                 Close
               </Button>
