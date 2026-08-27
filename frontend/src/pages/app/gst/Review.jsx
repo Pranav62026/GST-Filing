@@ -1,9 +1,10 @@
-import { useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import Button from "../../../components/ui/Button";
 import Card from "../../../components/ui/Card";
+import { AuthContext } from "../../../context/AuthContext";
 
 function DocumentPreview({ title, file }) {
   const preview = useMemo(() => {
@@ -13,7 +14,9 @@ function DocumentPreview({ title, file }) {
 
   useEffect(() => {
     return () => {
-      if (preview) URL.revokeObjectURL(preview);
+      if (preview) {
+        URL.revokeObjectURL(preview);
+      }
     };
   }, [preview]);
 
@@ -39,9 +42,8 @@ function DocumentPreview({ title, file }) {
             <p className="truncate text-sm font-medium text-on-surface">
               {file?.name || "Document"}
             </p>
-            <p className="mt-1 text-xs text-on-surface-variant">
-              PDF Document
-            </p>
+
+            <p className="mt-1 text-xs text-on-surface-variant">PDF Document</p>
           </div>
         </div>
       )}
@@ -54,8 +56,11 @@ function DocumentPreview({ title, file }) {
 }
 
 function ReviewDocuments() {
+  const { updateUserOnboarding } = useContext(AuthContext);
+
   const location = useLocation();
   const navigate = useNavigate();
+
   const files = location.state?.files;
 
   if (!files) {
@@ -83,9 +88,19 @@ function ReviewDocuments() {
   }
 
   const handleFinalSubmit = () => {
-    // Temporary: replace with the document submission API when available.
+    // Temporary: replace with the final submission API when available.
     console.log("Submitted Documents:", files);
-    toast.success("Documents submitted successfully!");
+
+    const result = updateUserOnboarding("completed");
+
+    if (!result.success) {
+      toast.error(result.message);
+      return;
+    }
+
+    toast.success("GST filing application submitted successfully!");
+
+    navigate("/dashboard");
   };
 
   return (
@@ -104,9 +119,13 @@ function ReviewDocuments() {
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <DocumentPreview title="Aadhaar Card" file={files.aadhaar} />
+
             <DocumentPreview title="PAN Card" file={files.pan} />
+
             <DocumentPreview title="Applicant Photo" file={files.photo} />
+
             <DocumentPreview title="Signature" file={files.signature} />
+
             <DocumentPreview
               title="Business Related Document"
               file={files.businessDocument}

@@ -1,5 +1,9 @@
 import { createContext, useState } from "react";
-import { getCurrentUser, logoutUser } from "../services/mockAuth";
+import {
+  getCurrentUser,
+  logoutUser,
+  updateOnboardingStatus,
+} from "../services/mockAuth";
 
 export const AuthContext = createContext();
 
@@ -15,6 +19,16 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  const updateUserOnboarding = (status) => {
+    const result = updateOnboardingStatus(status);
+
+    if (result.success) {
+      setUser(result.user);
+    }
+
+    return result;
+  };
+
   const isAuthenticated = user !== null;
 
   return (
@@ -24,6 +38,7 @@ export function AuthProvider({ children }) {
         login,
         logout,
         isAuthenticated,
+        updateUserOnboarding,
       }}
     >
       {children}

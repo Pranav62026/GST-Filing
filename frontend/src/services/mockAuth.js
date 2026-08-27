@@ -62,7 +62,7 @@ export function loginUser(email, password) {
 
   return {
     success: true,
-    user: user,
+    user,
   };
 }
 
@@ -74,6 +74,40 @@ export function getCurrentUser() {
   }
 
   return JSON.parse(user);
+}
+
+
+
+// onboarding staus 
+
+export function updateOnboardingStatus(status) {
+  const currentUser = getCurrentUser();
+
+  if (!currentUser) {
+    return {
+      success: false,
+      message: "No logged-in user found.",
+    };
+  }
+
+  const users = getUsers();
+
+  const updatedUser = {
+    ...currentUser,
+    onboardingStatus: status,
+  };
+
+  const updatedUsers = users.map((user) =>
+    user.id === currentUser.id ? updatedUser : user,
+  );
+
+  localStorage.setItem(USERS_KEY, JSON.stringify(updatedUsers));
+  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(updatedUser));
+
+  return {
+    success: true,
+    user: updatedUser,
+  };
 }
 
 export function logoutUser() {
