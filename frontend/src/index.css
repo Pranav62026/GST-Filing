@@ -4,50 +4,60 @@
 @theme {
   /* =========================================================
      BRAND
+     Trustworthy navy + clear technology blue
      ========================================================= */
 
-  --color-primary: #212c43;
+  --color-primary: #3b82f6;
   --color-on-primary: #ffffff;
-  --color-primary-hover: #182338;
+  --color-primary-hover: #2563eb;
 
   /* =========================================================
      GLOBAL DARK THEME
      ========================================================= */
 
-  /* Main application background */
-  --color-background: #0f172a;
+  /* Main application background
+     Deep navy communicates trust, security and stability. */
+  --color-background: #0b1220;
 
   /* Main cards / surfaces */
-  --color-surface: #172238;
+  --color-surface: #111c2f;
 
   /* Surface hierarchy */
-  --color-surface-low: #111b2d;
-  --color-surface-container: #1E304A;
-  --color-surface-high: #2b3854;
+  --color-surface-low: #0e1829;
+  --color-surface-container: #172640;
+  --color-surface-high: #203451;
 
   /* =========================================================
      TEXT
      ========================================================= */
 
+  /* Secondary / supporting text */
   --color-secondary: #cbd5e1;
 
+  /* Primary readable text */
   --color-on-surface: #f8fafc;
 
-  --color-on-surface-variant: #94a3b8;
+  /* Muted text */
+  --color-on-surface-variant: #9aaac0;
 
   /* =========================================================
      BORDERS
      ========================================================= */
 
-  --color-outline: #475569;
-  --color-outline-variant: #334155;
+  --color-outline: #526783;
+  --color-outline-variant: #344963;
 
   /* =========================================================
      FEEDBACK
      ========================================================= */
 
+  /* Green = success / completed / approved */
   --color-success: #22c55e;
+
+  /* Amber = pending / attention */
   --color-warning: #f59e0b;
+
+  /* Red = rejected / error */
   --color-error: #ef4444;
 
   /* =========================================================
@@ -74,21 +84,29 @@
   --radius-2xl: 24px;
 
   /* =========================================================
-     LANDING PAGE BRAND TOKENS
+     LANDING PAGE BRAND
      ========================================================= */
 
-  --color-brand-navy: #212c43;
-  --color-brand-navy-light: #2b3854;
+  /* Trust / corporate identity */
+  --color-brand-navy: #16243d;
+  --color-brand-navy-light: #243653;
 
-  --color-brand-blue: #0ea5e9;
-  --color-brand-blue-light: #e0f2fe;
-  --color-brand-blue-medium: #38bdf8;
+  /* Technology / clarity */
+  --color-brand-blue: #2563eb;
+  --color-brand-blue-light: #dbeafe;
+  --color-brand-blue-medium: #60a5fa;
 
+  /* Growth / success */
   --color-brand-green: #15803d;
   --color-brand-green-bright: #22c55e;
+
+  /* WhatsApp */
   --color-brand-whatsapp: #25d366;
 
-  /* Landing page neutral tokens */
+  /* =========================================================
+     LANDING PAGE NEUTRALS
+     ========================================================= */
+
   --color-brand-gray-50: #f8fafc;
   --color-brand-gray-100: #f1f5f9;
   --color-brand-gray-200: #e2e8f0;
@@ -148,6 +166,6 @@ body {
    ========================================================= */
 
 *:focus-visible {
-  outline: 2px solid var(--color-brand-blue);
+  outline: 2px solid var(--color-brand-blue-medium);
   outline-offset: 2px;
 }
