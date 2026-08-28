@@ -16,6 +16,7 @@ import Home from "../pages/Home";
 import Documents from "../pages/app/gst/Documents";
 import ReviewDocuments from "../pages/app/gst/Review";
 import GstRegistration from "../pages/app/gst/GstRegistration";
+import Notifications from "../pages/app/Notifications";
 
 function AppRoutes() {
   return (
@@ -68,7 +69,7 @@ function AppRoutes() {
 
               <Route path="/messages" element={<div>Messages</div>} />
 
-              <Route path="/notifications" element={<div>Notifications</div>} />
+              <Route path="/notifications" element={<Notifications />} />
 
               <Route path="/uitest" element={<UiTest />} />
             </Route>

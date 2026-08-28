@@ -1,10 +1,19 @@
 function Badge({ children, variant = "default", className = "" }) {
   const variants = {
-    default: "bg-surface-container text-on-surface-variant",
-    success: "bg-green-950/60 text-green-400 border border-green-800/60",
-    warning: "bg-amber-950/60 text-amber-400 border border-amber-800/60",
-    error: "bg-red-950/60 text-red-400 border border-red-800/60",
-    info: "bg-blue-950/60 text-blue-400 border border-blue-800/60",
+    // Neutral — calm, informational, no emotional signal
+    default: "bg-slate-500/10 text-slate-300 border border-slate-400/20",
+
+    // Success — positive confirmation and reassurance
+    success: "bg-emerald-500/10 text-emerald-400 border border-emerald-400/25",
+
+    // Pending — attention without creating danger/alarm
+    warning: "bg-amber-500/10 text-amber-400 border border-amber-400/25",
+
+    // Error / rejected — strong attention and urgency
+    error: "bg-red-500/10 text-red-400 border border-red-400/25",
+
+    // Information — trustworthy, neutral action/information
+    info: "bg-blue-500/10 text-blue-400 border border-blue-400/25",
   };
 
   return (

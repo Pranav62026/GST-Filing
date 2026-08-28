@@ -17,67 +17,14 @@ import Card from "../../components/ui/Card";
 import Badge from "../../components/ui/Badge";
 import Modal from "../../components/ui/Modal";
 import { AuthContext } from "../../context/AuthContext";
+import notifications from "../../data/notifications";
+
+import applications from "../../data/applications";
 
 /*
  * Temporary mock data.
  * This structure is ready to be replaced by the backend API later.
  */
-const APPLICATIONS = [
-  {
-    id: "GST-2026-001",
-    date: "26 Aug 2026",
-    applicationType: "GST Registration",
-    status: "pending",
-  },
-  {
-    id: "GST-2026-002",
-    date: "20 Aug 2026",
-    applicationType: "GST Registration",
-    status: "approved",
-  },
-  {
-    id: "GST-2026-003",
-    date: "14 Aug 2026",
-    applicationType: "GST Registration",
-    status: "pending",
-  },
-  {
-    id: "GST-2026-004",
-    date: "08 Aug 2026",
-    applicationType: "GST Registration",
-    status: "rejected",
-  },
-  {
-    id: "GST-2026-005",
-    date: "02 Aug 2026",
-    applicationType: "GST Registration",
-    status: "approved",
-  },
-];
-
-const NOTIFICATIONS = [
-  {
-    id: 1,
-    title: "Document review pending",
-    message: "Your documents for GST-2026-001 are currently under review.",
-    time: "2 hours ago",
-    icon: Clock3,
-  },
-  {
-    id: 2,
-    title: "Application approved",
-    message: "GST-2026-002 has been successfully approved.",
-    time: "2 days ago",
-    icon: CheckCircle2,
-  },
-  {
-    id: 3,
-    title: "Application needs attention",
-    message: "Please check the latest update for GST-2026-004.",
-    time: "4 days ago",
-    icon: XCircle,
-  },
-];
 
 const STATUS_CONFIG = {
   pending: {
@@ -123,8 +70,14 @@ function StatCard({ label, value, description, icon: Icon }) {
   );
 }
 
+const NOTIFICATION_ICONS = {
+  pending: Clock3,
+  success: CheckCircle2,
+  error: XCircle,
+};
+
 function NotificationItem({ notification }) {
-  const Icon = notification.icon;
+  const Icon = NOTIFICATION_ICONS[notification.type] || Bell;
 
   return (
     <div className="flex gap-3 border-b border-outline-variant px-5 py-4 last:border-b-0">
@@ -171,7 +124,7 @@ function Dashboard() {
   const filteredApplications = useMemo(() => {
     const query = search.trim().toLowerCase();
 
-    return APPLICATIONS.filter((application) => {
+    return applications.filter((application) => {
       const matchesSearch =
         !query ||
         application.id.toLowerCase().includes(query) ||
@@ -185,11 +138,11 @@ function Dashboard() {
 
   const counts = useMemo(
     () => ({
-      total: APPLICATIONS.length,
-      pending: APPLICATIONS.filter((item) => item.status === "pending").length,
-      approved: APPLICATIONS.filter((item) => item.status === "approved")
+      total: applications.length,
+      pending: applications.filter((item) => item.status === "pending").length,
+      approved: applications.filter((item) => item.status === "approved")
         .length,
-      rejected: APPLICATIONS.filter((item) => item.status === "rejected")
+      rejected: applications.filter((item) => item.status === "rejected")
         .length,
     }),
     [],
@@ -239,11 +192,7 @@ function Dashboard() {
             <button
               type="button"
               aria-label="View notifications"
-              onClick={() =>
-                document
-                  .getElementById("notifications")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
+              onClick={() => (window.location.href = "/notifications")}
               className="shrink-0 rounded-md p-1.5 text-on-surface transition-colors hover:bg-surface-container"
             >
               <Bell className="h-4 w-4" aria-hidden="true" />
@@ -494,7 +443,7 @@ function Dashboard() {
               </div>
 
               <div className="border-t border-outline-variant px-4 py-3 text-xs text-on-surface-variant sm:px-5">
-                Showing {filteredApplications.length} of {APPLICATIONS.length}{" "}
+                Showing {filteredApplications.length} of {applications.length}{" "}
                 applications
               </div>
             </Card>
@@ -513,14 +462,18 @@ function Dashboard() {
                 </p>
               </div>
 
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-outline-variant bg-surface text-on-surface">
-                <Bell className="h-4 w-4" aria-hidden="true" />
-              </div>
+              <button
+                type="button"
+                onClick={() => (window.location.href = "/notifications")}
+                className="shrink-0 text-xs font-medium text-primary transition-colors hover:text-primary-hover"
+              >
+                View All →
+              </button>
             </div>
 
             <Card padding={false} className="overflow-hidden">
-              {NOTIFICATIONS.length > 0 ? (
-                NOTIFICATIONS.map((notification) => (
+              {notifications.length > 0 ? (
+                notifications.map((notification) => (
                   <NotificationItem
                     key={notification.id}
                     notification={notification}
