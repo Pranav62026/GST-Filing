@@ -5,13 +5,16 @@ import { CONTACT } from "../../data/siteConfig";
 
 function QuestionsCTA() {
   return (
-    <section className="py-section-sm lg:py-section" id="questions-cta">
+    <section
+      className="bg-brand-gray-50 py-section-sm lg:py-section"
+      id="questions-cta"
+    >
       <SectionContainer>
-        <div className="overflow-hidden rounded-2xl bg-brand-blue-light">
-          <div className="flex flex-col items-center gap-8 px-6 py-10 sm:px-10 md:flex-row md:justify-between md:py-12 lg:px-16">
+        <div className="overflow-hidden rounded-2xl border border-brand-gray-200 bg-white shadow-sm">
+          <div className="flex flex-col items-center gap-8 bg-brand-blue-light px-6 py-10 sm:px-10 md:flex-row md:justify-between md:py-12 lg:px-16">
             {/* Left — Icon + text */}
             <div className="flex flex-col items-center gap-5 text-center md:flex-row md:text-left">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-brand-blue/10">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-white shadow-sm">
                 <Headphones
                   className="h-8 w-8 text-brand-blue"
                   aria-hidden="true"
@@ -22,7 +25,8 @@ function QuestionsCTA() {
                 <h2 className="text-2xl font-bold text-brand-navy sm:text-3xl">
                   Have Questions?
                 </h2>
-                <p className="mt-1 max-w-md text-sm text-brand-gray-600 sm:text-base">
+
+                <p className="mt-1 max-w-md text-sm leading-6 text-brand-gray-600 sm:text-base">
                   Talk to our experts and find the right solution for your
                   business.
                 </p>
@@ -30,7 +34,7 @@ function QuestionsCTA() {
             </div>
 
             {/* Right — CTA buttons */}
-            <div className="flex flex-col gap-3 sm:flex-row">
+            <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
               <Button
                 variant="navy"
                 size="lg"
