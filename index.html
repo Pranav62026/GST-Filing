@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Apex Legal Counsel GST Filing Admin Dashboard">
+<title>Apex GST Filing | Admin Dashboard</title>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ======================== SIDEBAR ======================== -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            
+            <div class="brand-name"><span>GST</span> Filing</div>
+        </div>
+
+        <nav class="nav" aria-label="Admin navigation">
+
+            <div class="nav-label">Main Menu</div>
+
+            <button class="nav-item active" data-route="dashboard">
+                <span class="nav-icon">▦</span> Dashboard
+            </button>
+
+            <button class="nav-item" data-route="users">
+                <span class="nav-icon">♙</span> Users
+            </button>
+
+            <button class="nav-item" data-route="applications">
+                <span class="nav-icon">▤</span> GST Applications
+            </button>
+
+            <button class="nav-item" data-route="pending">
+                <span class="nav-icon">◷</span> Pending Applications
+            </button>
+
+            <button class="nav-item" data-route="approved">
+                <span class="nav-icon">✓</span> Approved Applications
+            </button>
+
+            <button class="nav-item" data-route="rejected">
+                <span class="nav-icon">×</span> Rejected Applications
+            </button>
+
+            <br>
+
+            <div class="nav-label">Administration</div>
+
+            <button class="nav-item" data-route="documents">
+                <span class="nav-icon">▣</span> Document Verification
+            </button>
+
+            <button class="nav-item" data-route="notifications">
+                <span class="nav-icon">♢</span> Notifications
+            </button>
+
+            <button class="nav-item" data-route="reports">
+                <span class="nav-icon">▥</span> Reports
+            </button>
+
+            <button class="nav-item" data-route="settings">
+                <span class="nav-icon">⚙</span> Settings
+            </button>
+
+            <button class="nav-item" data-route="support">
+                <span class="nav-icon">?</span> Help & Support
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="profile">
+                <div class="avatar">AD</div>
+                <div>
+                    <div class="profile-name">Admin</div>
+                    <div class="profile-role">GST Administrator</div>
+                </div>
+            </div>
+            <button class="logout" id="logoutBtn">
+                <span>↪</span> Logout
+            </button>
+        </div>
+
+    </aside>
+
+    <div class="overlay" id="overlay"></div>
+
+    <!-- ======================== MAIN ======================== -->
+    <main class="main">
+
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation">☰</button>
+
+                <div class="title">
+                    <h1>Admin Dashboard</h1>
+                    <p>GST Filing Management System</p>
+                </div>
+            </div>
+
+            <div class="top-actions">
+                <button class="icon-button" id="notificationBtn" aria-label="Notifications">
+                    ♧
+                    <span class="dot"></span>
+                </button>
+            </div>
+        </header>
+
+        <section class="content">
+
+            <!-- Welcome -->
+            <div class="welcome">
+                <div>
+                    <h2>Welcome back, Admin 👋</h2>
+                    <p>Monitor users, GST applications, documents and application status from one place.</p>
+                </div>
+
+                <div class="date-pill" id="currentDate">Loading date...</div>
+            </div>
+
+            <!-- ======================== SUMMARY CARDS ======================== -->
+            <section class="stats" aria-label="Dashboard summary">
+
+                <article class="stat users">
+                    <div class="stat-top">
+                        <div class="stat-label">Total Users</div>
+                        <div class="stat-icon">♙</div>
+                    </div>
+                    <div class="stat-number" id="totalUsers">0</div>
+                    <div class="stat-note">Registered users</div>
+                </article>
+
+                <article class="stat apps">
+                    <div class="stat-top">
+                        <div class="stat-label">Total Applications</div>
+                        <div class="stat-icon">▤</div>
+                    </div>
+                    <div class="stat-number" id="totalApplications">0</div>
+                    <div class="stat-note">GST applications submitted</div>
+                </article>
+
+                <article class="stat pending">
+                    <div class="stat-top">
+                        <div class="stat-label">Pending Applications</div>
+                        <div class="stat-icon">◷</div>
+                    </div>
+                    <div class="stat-number" id="pendingApplications">0</div>
+                    <div class="stat-note">Currently under review</div>
+                </article>
+
+                <article class="stat approved">
+                    <div class="stat-top">
+                        <div class="stat-label">Approved Applications</div>
+                        <div class="stat-icon">✓</div>
+                    </div>
+                    <div class="stat-number" id="approvedApplications">0</div>
+                    <div class="stat-note">Successfully approved</div>
+                </article>
+
+                <article class="stat rejected">
+                    <div class="stat-top">
+                        <div class="stat-label">Rejected Applications</div>
+                        <div class="stat-icon">×</div>
+                    </div>
+                    <div class="stat-number" id="rejectedApplications">0</div>
+                    <div class="stat-note">Applications rejected</div>
+                </article>
+
+            </section>
+
+            <!-- ======================== APPLICATIONS + USERS ======================== -->
+            <div class="grid">
+
+                <!-- Recent Applications -->
+                <section class="panel dashboard-panel-link" id="recentApplicationsPreview">
+                    <div class="panel-head">
+                        <div>
+                            <h3>Recent GST Applications</h3>
+                            <p>Latest applications submitted by users</p>
+                        </div>
+                        <button class="link-button" data-route="applications">View All →</button>
+                    </div>
+
+                    <div class="toolbar">
+                        <div class="search">
+                            <span>⌕</span>
+                            <input id="applicationSearch" type="search" placeholder="Search application, user or service...">
+                        </div>
+
+                        <select class="select" id="applicationStatusFilter">
+                            <option value="all">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Application ID</th>
+                                    <th>Applicant / User</th>
+                                    <th>Date</th>
+                                    <th>GST Service / Type</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="applicationsBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Application Statistics -->
+                <section class="panel chart-panel dashboard-panel-link" id="applicationStatisticsPreview">
+                    <div class="panel-head">
+                        <div>
+                            <h3>Application Statistics</h3>
+                            <p>Current application status overview</p>
+                        </div>
+                        <button class="link-button" id="refreshChart">Refresh</button>
+                    </div>
+
+                    <div class="chart-area">
+                        <div class="chart-box">
+                            <div class="y-axis">
+                                <span>900</span>
+                                <span>675</span>
+                                <span>450</span>
+                                <span>225</span>
+                                <span>0</span>
+                            </div>
+
+                            <div class="chart">
+                                <div class="bars" id="bars"></div>
+                            </div>
+                        </div>
+
+                        <div class="legend">
+                            <div class="legend-item"><span class="legend-dot" style="background:#d8b77b"></span>Total</div>
+                            <div class="legend-item"><span class="legend-dot" style="background:#f1b35e"></span>Pending</div>
+                            <div class="legend-item"><span class="legend-dot" style="background:#42d39b"></span>Approved</div>
+                            <div class="legend-item"><span class="legend-dot" style="background:#ef7777"></span>Rejected</div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- ======================== USERS + QUICK ACTIONS ======================== -->
+            <div class="grid">
+
+                <!-- Recent Users -->
+                <section class="panel dashboard-panel-link" id="recentUsersPreview">
+                    <div class="panel-head">
+                        <div>
+                            <h3>Recent Users</h3>
+                            <p>Newest registered users</p>
+                        </div>
+                        <button class="link-button" data-route="users">View All →</button>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User Name</th>
+                                    <th>Email</th>
+                                    <th>Registration Date</th>
+                                    <th>Account Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Quick Actions -->
+                <section class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <h3>Quick Actions</h3>
+                            <p>Frequently used admin functions</p>
+                        </div>
+                    </div>
+
+                    <div class="quick-actions">
+
+                        <button class="quick" data-route="applications">
+                            <div class="quick-icon">▤</div>
+                            <div><strong>View All Applications</strong><span>Manage GST applications</span></div>
+                        </button>
+
+                        <button class="quick" data-route="users">
+                            <div class="quick-icon">♙</div>
+                            <div><strong>Manage Users</strong><span>View registered users</span></div>
+                        </button>
+
+                        <button class="quick" data-route="pending">
+                            <div class="quick-icon">◷</div>
+                            <div><strong>Pending Applications</strong><span>Review pending cases</span></div>
+                        </button>
+
+                        <button class="quick" data-route="documents">
+                            <div class="quick-icon">▣</div>
+                            <div><strong>Document Verification</strong><span>Verify uploaded documents</span></div>
+                        </button>
+
+                        <button class="quick" data-route="notifications">
+                            <div class="quick-icon">♢</div>
+                            <div><strong>Notifications</strong><span>Review admin alerts</span></div>
+                        </button>
+
+                        <button class="quick" data-route="reports">
+                            <div class="quick-icon">▥</div>
+                            <div><strong>Reports</strong><span>Generate GST reports</span></div>
+                        </button>
+
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- ======================== DEDICATED RECENT USERS VIEW ======================== -->
+            <section class="panel-view" id="recentUsersView">
+                <div class="panel-head">
+                    <div>
+                        <h3>Recent Users</h3>
+                        <p>Detailed view of newly registered GST portal users</p>
+                    </div>
+                    <button class="view-back" data-route="dashboard">← Back to Dashboard</button>
+                </div>
+
+                <div class="detail-grid">
+                    <div class="detail-card"><small>Total Users</small><strong id="usersViewTotal">0</strong></div>
+                    <div class="detail-card"><small>Active Users</small><strong id="usersViewActive">0</strong></div>
+                    <div class="detail-card"><small>Inactive Users</small><strong id="usersViewInactive">0</strong></div>
+                </div>
+
+                <div class="panel" style="margin-top:18px">
+                    <div class="toolbar">
+                        <div class="search">
+                            <span>⌕</span>
+                            <input id="userSearch" type="search" placeholder="Search user or email...">
+                        </div>
+                        <select class="select" id="userStatusFilter">
+                            <option value="all">All Accounts</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>User Name</th><th>Email</th><th>Registration Date</th><th>Account Status</th><th>Action</th></tr></thead>
+                            <tbody id="usersViewBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================== DEDICATED APPLICATION STATISTICS VIEW ======================== -->
+            <section class="panel-view" id="applicationStatisticsView">
+                <div class="panel-head">
+                    <div>
+                        <h3>Application Statistics</h3>
+                        <p>Detailed overview of GST applications and their current status</p>
+                    </div>
+                    <button class="view-back" data-route="dashboard">← Back to Dashboard</button>
+                </div>
+
+                <div class="detail-grid">
+                    <div class="detail-card"><small>Total Applications</small><strong id="statsViewTotal">0</strong></div>
+                    <div class="detail-card"><small>Pending Applications</small><strong id="statsViewPending">0</strong></div>
+                    <div class="detail-card"><small>Approved Applications</small><strong id="statsViewApproved">0</strong></div>
+                </div>
+                <div class="detail-grid" style="margin-top:15px">
+                    <div class="detail-card"><small>Rejected Applications</small><strong id="statsViewRejected">0</strong></div>
+                    <div class="detail-card"><small>Approval Rate</small><strong id="statsViewApprovalRate">0%</strong></div>
+                    <div class="detail-card"><small>Pending Rate</small><strong id="statsViewPendingRate">0%</strong></div>
+                </div>
+
+                <div class="panel chart-panel" style="margin-top:18px">
+                    <div class="panel-head">
+                        <div><h3>Application Status Chart</h3><p>Visual comparison of total, pending, approved and rejected applications</p></div>
+                        <button class="link-button" id="refreshStatsView">Refresh</button>
+                    </div>
+                    <div class="chart-area">
+                        <div class="chart-box">
+                            <div class="y-axis"><span>900</span><span>675</span><span>450</span><span>225</span><span>0</span></div>
+                            <div class="chart"><div class="bars" id="statsViewBars"></div></div>
+                        </div>
+                        <div class="legend">
+                            <div class="legend-item"><span class="legend-dot" style="background:#d8b77b"></span>Total</div>
+                            <div class="legend-item"><span class="legend-dot" style="background:#f1b35e"></span>Pending</div>
+                            <div class="legend-item"><span class="legend-dot" style="background:#42d39b"></span>Approved</div>
+                            <div class="legend-item"><span class="legend-dot" style="background:#ef7777"></span>Rejected</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </section>
+
+        <footer class="footer">
+            © 2026 Apex Legal Counsel. All Rights Reserved.
+        </footer>
+
+    </main>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+    <div class="toast-title" id="toastTitle">Action</div>
+    <div class="toast-text" id="toastText">Done.</div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
