@@ -1,9 +1,3 @@
-
-/* =========================================================
-   MOCK DATA
-   Replace these objects later with API responses.
-   ========================================================= */
-
 const dashboardData = {
     totalUsers: 1250,
     totalApplications: 875,
@@ -138,9 +132,7 @@ function updateSummary(){
     $("rejectedApplications").textContent = dashboardData.rejectedApplications.toLocaleString("en-IN");
 }
 
-/* =========================================================
-   RECENT APPLICATIONS
-   ========================================================= */
+/* RECENT APPLICATIONS */
 
 function renderApplications(list){
     const body = $("applicationsBody");
@@ -207,9 +199,7 @@ function viewApplication(id){
     );
 }
 
-/* =========================================================
-   RECENT USERS
-   ========================================================= */
+/* RECENT USERS */
 
 function renderUsers(){
     const body = $("usersBody");
@@ -250,10 +240,7 @@ function viewUser(email){
     );
 }
 
-/* =========================================================
-   APPLICATION STATISTICS CHART
-   Pure HTML/CSS chart; no external library required.
-   ========================================================= */
+/*  APPLICATION STATISTICS CHART */
 
 function renderChart(){
     const values = [
@@ -282,9 +269,7 @@ function renderChart(){
     }).join("");
 }
 
-/* =========================================================
-   DATE
-   ========================================================= */
+/*  DATE */
 
 function renderDate(){
     const now = new Date();
@@ -298,9 +283,7 @@ function renderDate(){
         });
 }
 
-/* =========================================================
-   DEDICATED RECENT USERS VIEW
-   ========================================================= */
+/* DEDICATED RECENT USERS VIEW */
 
 function renderUsersView(){
     const active = users.filter(u => u.status === "active").length;
@@ -335,9 +318,7 @@ function filterUsersView(){
     `).join("");
 }
 
-/* =========================================================
-   DEDICATED APPLICATION STATISTICS VIEW
-   ========================================================= */
+/* DEDICATED APPLICATION STATISTICS VIEW */
 
 function renderStatisticsView(){
     const total = dashboardData.totalApplications;
@@ -364,9 +345,7 @@ function renderStatisticsView(){
     }).join("");
 }
 
-/* =========================================================
-   RESPONSIVE SIDEBAR
-   ========================================================= */
+/* RESPONSIVE SIDEBAR */
 
 function openSidebar(){
     $("sidebar").classList.add("open");
@@ -454,9 +433,7 @@ $("refreshStatsView").addEventListener("click", () => {
     showToast("Statistics Refreshed", "Application statistics have been updated.");
 });
 
-/* =========================================================
-   FILTER EVENTS
-   ========================================================= */
+/* FILTER EVENTS */
 
 $("applicationSearch").addEventListener("input",filterApplications);
 $("applicationStatusFilter").addEventListener("change",filterApplications);
@@ -521,8 +498,6 @@ function simulateInitialLoad(){
     },450);
 }
 
-/* =========================================================
-   START APPLICATION
-   ========================================================= */
+/* START APPLICATION */
 
 simulateInitialLoad();
